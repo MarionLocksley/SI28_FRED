@@ -191,9 +191,9 @@ function userName() {
 function printUserName() {
     document.getElementById("userName").innerHTML="Bien sur, tu t'appelles "+name+".";
 
-    $("#userName").html("'Bien sur, tu t'appelles '+name+'.'")
+    // $("#userName").html("'Bien sur, tu t'appelles '+name+'.'")
 
-    //console.log(name);
+    console.log(name);
 
 }
 
@@ -229,102 +229,89 @@ function fadeOutNow() {
 
 
 function touchMe(){
-    // on va chercher l'element du DOM dont l'id est "myElement"
+
+    // on va chercher l'element du DOM dont l'id est "div1"
     // et on le met dans la variable "myElement" pour pouvoir agir dessus après
     var touch = document.getElementById('div1');
 
-    var gche = document.getElementById('left');
-    var gcheNumber = 0;
+    var ecrirededans = document.getElementById('writeHere');
 
-    var droite = document.getElementById('right');
-    var droiteNumber = 0;
 
-    var haut = document.getElementById('up');
-    var hautNumber = 0;
+    var nb = 0;
 
-    var bas = document.getElementById('down');
-    var basNumber = 0;
-
-    var tap = document.getElementById('tap');
-    var tapNumber = 0;
-
-    var press = document.getElementById('press');
-    var pressNumber = 0;
 
     // create a simple instance
     // by default, it only adds horizontal recognizers
+
     var mc = new Hammer(touch);
 
     // let the pan gesture support all directions.
     // this will block the vertical scrolling on a touch-device while on the element
+
     mc.get('pan').set({ direction: Hammer.DIRECTION_ALL });
 
 
     // listen to events...
-    // mc.on("panleft panright panup pandown tap press", function(ev) {
-    //     myElement.textContent = ev.type +" gesture detected.";
+    mc.on("panleft panright panup pandown tap press", function(ev) {
+        //ecrirededans.textContent = ev.type +" gesture detected.";
+        nb++;
+        //console.log(nb);
+        //ecrirededans.innerHTML = nb.toString();
+        if (nb==60){
+            //console.log("gauche marche.");
+            $('#div1').load("src/pinceMoi.html");
+        }
 
-    // });
+    });
 
 
     // lorsque l'une des gestures est reconnue, on incrémente la variable associée
     // et on met à jour le span correspondant
-    mc.on("panleft", function() {
+
+/*    mc.on("panleft", function() {
         gcheNumber++;
         gche.innerHTML = gcheNumber.toString();
         if (gcheNumber==100){
             //console.log("gauche marche.");
             $('#div1').load("src/merci.html");
         }
-    });
+    });*/
 
-    mc.on("panright", function(ev) {
-        droiteNumber++;
-        droite.innerHTML = droiteNumber.toString();
-    });
-
-    mc.on("panup", function(ev) {
-        hautNumber++;
-        haut.innerHTML = hautNumber.toString();
-    });
-
-    mc.on("pandown", function(ev) {
-        basNumber++;
-        bas.innerHTML = basNumber.toString();
-    });
-
-    mc.on("tap", function(ev) {
-        tapNumber++;
-        tap.innerHTML = tapNumber.toString();
-    });
-
-    mc.on("press", function(ev) {
-        pressNumber++;
-        press.innerHTML = pressNumber.toString();
-    });
+}
 
 
 
+function pinceMe(){
+    var myElement = document.getElementById('div1');
+    var nbTest = document.getElementById('nbTest');
 
-    var mc2 = new Hammer.Manager(touch);
 
-    // create a pinch and rotate recognizer
-    // these require 2 pointers
+    var mc = new Hammer.Manager(myElement);
+
+// create a pinch and rotate recognizer
+// these require 2 pointers
     var pinch = new Hammer.Pinch();
     var rotate = new Hammer.Rotate();
 
-    // we want to detect both the same time
+// we want to detect both the same time
     pinch.recognizeWith(rotate);
 
-    // add to the Manager
-    mc2.add([pinch, rotate]);
+// add to the Manager
+    mc.add([pinch, rotate]);
 
-
-    mc2.on("pinch rotate", function(ev) {
-        touch.textContent = ev.type +" gesture detected. ";
+    var nb=0;
+    mc.on("pinch rotate", function(ev) {
+        nb++;
+        nbTest.innerHTML = nb;
+        if (nb==80){
+            //console.log("pinch marche.");
+            $('#div1').load("src/merci.html");
+        }
     });
-
 }
+
+
+
 
 
 ////// charger page userName ////////////

@@ -21,11 +21,18 @@ body {
     height: 100%;
 }
 
-.centeredDiv {
+/*.centeredDiv {
     top: 50%;
     left: 50%;
     position: absolute;
     transform: translate(-50%, -50%);
+}*/
+
+.centeredDiv {
+    top: 10%;
+    left: 10%;
+    position: absolute;
+    transform: translate(-5%, -5%);
 }
 
 .chatouilleMoi2 {
@@ -114,3 +121,4 @@ h2 {
     fill : steelblue;
     fill-opacity : .9;
 }
+
