@@ -212,15 +212,47 @@ $( document.body ).click(function() {
 
 
 
-/////////////// FONCTION POUR FADE OUT une DIV /////////// MARCHE PAS
+/////////////// FONCTION POUR FADE OUT une DIV ///////////
 // http://api.jquery.com/fadeIn/
 
 // With the element initially hidden, we can show it slowly:
 
 function fadeOutNow() {
-    $("#fadeOut").delay(1000).fadeOut(3000, function () {
+    $("#fadeOut").delay(3000).fadeOut(7000, function () {
         //console.log("fade out fini.");
         $('#div1').load("src/chatouilles.html");
+    });
+}
+
+
+function noVoice(){
+    $("#voice").delay(3000).fadeOut(3000, function () {
+        //console.log("fade out fini.");
+        $('#div1').load("src/tapoteMoi.html");
+    });
+}
+
+
+function tapoteMe(){
+    var tap = document.getElementById('div1');
+
+    // We create a manager object, which is the same as Hammer(), but without the presetted recognizers.
+    var mc = new Hammer.Manager(tap);
+
+    // Default, tap recognizer
+    mc.add( new Hammer.Tap() );
+
+    // Tap recognizer with minimal 4 taps
+    mc.add( new Hammer.Tap({ event: 'quadrupletap', taps: 4 }) );
+
+    // we want to recognize this simulatenous, so a quadrupletap will be detected even while a tap has been recognized.
+    // the tap event will be emitted on every tap
+    mc.get('quadrupletap').recognizeWith('tap');
+
+    mc.on("quadrupletap", function(ev) {
+        //myElement.textContent += ev.type +" ";
+        console.log("4Tap.");
+        $('#div1').load("src/secoueMoi.html");
     });
 }
 
@@ -234,11 +266,9 @@ function touchMe(){
     // et on le met dans la variable "myElement" pour pouvoir agir dessus après
     var touch = document.getElementById('div1');
 
-    var ecrirededans = document.getElementById('writeHere');
-
+    //var ecrirededans = document.getElementById('writeHere');
 
     var nb = 0;
-
 
     // create a simple instance
     // by default, it only adds horizontal recognizers
@@ -247,35 +277,59 @@ function touchMe(){
 
     // let the pan gesture support all directions.
     // this will block the vertical scrolling on a touch-device while on the element
-
     mc.get('pan').set({ direction: Hammer.DIRECTION_ALL });
-
 
     // listen to events...
     mc.on("panleft panright panup pandown tap press", function(ev) {
         //ecrirededans.textContent = ev.type +" gesture detected.";
         nb++;
-        //console.log(nb);
         //ecrirededans.innerHTML = nb.toString();
+        console.log("touch marche.");
         if (nb==60){
-            //console.log("gauche marche.");
+            console.log("gauche marche.");
             $('#div1').load("src/pinceMoi.html");
+            mc.off("panleft panright panup pandown tap press", function(){});
+            mc.destroy();
         }
 
     });
 
+}
 
-    // lorsque l'une des gestures est reconnue, on incrémente la variable associée
-    // et on met à jour le span correspondant
+function caresseMe(){
 
-/*    mc.on("panleft", function() {
-        gcheNumber++;
-        gche.innerHTML = gcheNumber.toString();
-        if (gcheNumber==100){
-            //console.log("gauche marche.");
-            $('#div1').load("src/merci.html");
+    // on va chercher l'element du DOM dont l'id est "div1"
+    // et on le met dans la variable "myElement" pour pouvoir agir dessus après
+    var caresse = document.getElementById('div1');
+
+    //var ecrirededans = document.getElementById('writeHere');
+
+    var nbCar = 0;
+
+    // create a simple instance
+    // by default, it only adds horizontal recognizers
+
+    var mcCar = new Hammer(caresse);
+
+    // let the pan gesture support all directions.
+    // this will block the vertical scrolling on a touch-device while on the element
+    mcCar.get('pan').set({ direction: Hammer.DIRECTION_ALL });
+
+    // listen to events...
+    mcCar.on("panleft panright panup pandown tap press", function(ev) {
+        //ecrirededans.textContent = ev.type +" gesture detected.";
+        nbCar++;
+        console.log("ça marche.");
+        //ecrirededans.innerHTML = nb.toString();
+        if (nbCar==50){
+            console.log("stop.");
+            $('#div1').load("src/plusDeVoix.html");
+            //mcCar.on("panleft panright panup pandown tap press",function(e){e.srcEvent.stopPropagation();});
+            mcCar.off("panleft panright panup pandown tap press", function () {});
+            mcCar.destroy();
         }
-    });*/
+
+    });
 
 }
 
@@ -304,14 +358,35 @@ function pinceMe(){
         nb++;
         nbTest.innerHTML = nb;
         if (nb==80){
-            //console.log("pinch marche.");
-            $('#div1').load("src/merci.html");
+            console.log("pinch marche.");
+            $('#div1').load("src/caresses.html");
+            mc.off("pinch rotate", function () {});
+            mc.destroy();
         }
     });
 }
 
 
+function secoueMe(){
 
+    //listen to shake event
+    var shakeEvent = new Shake({threshold: 15});
+
+    shakeEvent.start();
+
+    window.addEventListener('shake', function(){
+        alert("Shaked");
+    }, false);
+
+    //stop listening
+    function stopShake(){
+        shakeEvent.stop();
+    }
+
+    //check if shake is supported or not.
+    if(!("ondevicemotion" in window)){alert("Not Supported");}
+
+}
 
 
 ////// charger page userName ////////////

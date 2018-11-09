@@ -103,6 +103,8 @@
 				var trackingStarted = false;
 
 				function startVideo() {
+				    //plein ecran
+                    screenfull.request();
 					// start video
 					vid.play();
 					// start tracking
@@ -241,7 +243,7 @@
 
                 // l'appel jQuery ne marche pas directement dans le if en pur JS, donc on passe par cette fonction...
                 function EnAvantGuinguamp() {
-                    console.log("coucou Guiguamp")
+                    console.log("coucou Guiguamp");
                     $('#div1').load("src/chatouilles.html");
 				}
 

@@ -1,0 +1,38 @@
+<div class="centeredDiv" id="secoue">
+
+    <div id="secoueMoi">
+
+        <p>“Ouah ! J’aurais bien besoin d’un petit remontant moi ! Vous avez de la chance, vous les
+            humains, vous avez le café, les vitamines… Ah, je sais! il existe bien une façon de me
+            remettre les idées en place ! Aller, fais le ! Fais le je te dis, il faut que je me réveille ! S’il te
+            plaît ! Aller, secoue moi, quoi !</p>
+
+        <!--<H2>NB : <span id="writeHere"></span></H2>-->
+
+    </div>
+
+    <!--<script>secoueMe()</script>-->
+
+
+    <script>
+        var shakeEvent = new Shake({threshold: 15});
+
+        shakeEvent.start();
+
+        window.addEventListener('shake', function(){
+            alert("Shaked");
+        }, false);
+
+        //stop listening
+        function stopShake(){
+            shakeEvent.stop();
+        }
+
+        //check if shake is supported or not.
+        if(!("ondevicemotion" in window)){alert("Not Supported");}
+    </script>
+
+
+
+
+</div>
