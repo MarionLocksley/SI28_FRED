@@ -370,12 +370,14 @@ function pinceMe(){
 function secoueMe(){
 
     //listen to shake event
-    var shakeEvent = new Shake({threshold: 15});
+    var shakeEvent = new Shake({threshold: 5});
 
     shakeEvent.start();
 
     window.addEventListener('shake', function(){
-        alert("Shaked");
+        console.log("Shaked");
+        stopShake();
+        $('#div1').load("src/merci.html");
     }, false);
 
     //stop listening
