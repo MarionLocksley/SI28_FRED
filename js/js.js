@@ -234,6 +234,36 @@ function noVoice(){
 
 
 function tapoteMe(){
+
+/*
+    var taptap = document.getElementById('div1');
+
+    var nbTap = 0;
+
+    var mcTap = new Hammer(taptap);
+
+    // let the pan gesture support all directions.
+    // this will block the vertical scrolling on a touch-device while on the element
+    //mc.get('pan').set({ direction: Hammer.DIRECTION_ALL });
+
+    // listen to events...
+    mcTap.on("tap", function(ev) {
+        nbTap++;
+        console.log("tap marche.");
+        if (nbTap==10){
+            console.log("tap fini");
+            $('#div1').load("src/pinceMoi.html");
+            mcTap.off("panleft panright panup pandown tap press", function(){});
+            mcTap.destroy();
+        }
+
+    });
+
+*/
+
+
+
+
     var tap = document.getElementById('div1');
 
     // We create a manager object, which is the same as Hammer(), but without the presetted recognizers.
@@ -243,7 +273,7 @@ function tapoteMe(){
     mc.add( new Hammer.Tap() );
 
     // Tap recognizer with minimal 4 taps
-    mc.add( new Hammer.Tap({ event: 'quadrupletap', taps: 4 }) );
+    mc.add( new Hammer.Tap({ event: 'quadrupletap', taps: 2 }) );
 
     // we want to recognize this simulatenous, so a quadrupletap will be detected even while a tap has been recognized.
     // the tap event will be emitted on every tap
@@ -251,9 +281,13 @@ function tapoteMe(){
 
     mc.on("quadrupletap", function(ev) {
         //myElement.textContent += ev.type +" ";
-        console.log("4Tap.");
+        console.log("2Tap.");
+        mc.off("quadrupletap", function(){});
+        mc.destroy();
         $('#div1').load("src/secoueMoi.html");
     });
+
+
 }
 
 
@@ -369,6 +403,7 @@ function pinceMe(){
 
 function secoueMe(){
 
+    // https://github.com/alexgibson/shake.js
     //listen to shake event
     var shakeEvent = new Shake({threshold: 5});
 
@@ -377,7 +412,7 @@ function secoueMe(){
     window.addEventListener('shake', function(){
         console.log("Shaked");
         stopShake();
-        $('#div1').load("src/merci.html");
+        $('#div1').load("src/rangeMoi.html");
     }, false);
 
     //stop listening
@@ -387,6 +422,76 @@ function secoueMe(){
 
     //check if shake is supported or not.
     if(!("ondevicemotion" in window)){alert("Not Supported");}
+
+}
+
+function rangeMe(){
+
+    if ('LinearAccelerationSensor' in window && 'Gyroscope' in window) {
+        document.getElementById('moApi').innerHTML = 'Generic Sensor API';
+
+        let lastReadingTimestamp;
+        let accelerometer = new LinearAccelerationSensor();
+        accelerometer.addEventListener('reading', e => {
+            if (lastReadingTimestamp) {
+                intervalHandler(Math.round(accelerometer.timestamp - lastReadingTimestamp));
+            }
+            lastReadingTimestamp = accelerometer.timestamp
+            accelerationHandler(accelerometer, 'moAccel');
+        });
+        accelerometer.start();
+
+        if ('GravitySensor' in window) {
+            let gravity = new GravitySensor();
+            gravity.addEventListener('reading', e => accelerationHandler(gravity, 'moAccelGrav'));
+            gravity.start();
+        }
+
+        let gyroscope = new Gyroscope();
+        gyroscope.addEventListener('reading', e => rotationHandler({
+            alpha: gyroscope.x,
+            beta: gyroscope.y,
+            gamma: gyroscope.z
+        }));
+        gyroscope.start();
+
+    } else if ('DeviceMotionEvent' in window) {
+        document.getElementById('moApi').innerHTML = 'Device Motion API';
+
+        var onDeviceMotion = function (eventData) {
+            accelerationHandler(eventData.acceleration, 'moAccel');
+            accelerationHandler(eventData.accelerationIncludingGravity, 'moAccelGrav');
+            rotationHandler(eventData.rotationRate);
+            intervalHandler(eventData.interval);
+        }
+
+        window.addEventListener('devicemotion', onDeviceMotion, false);
+    } else {
+        document.getElementById('moApi').innerHTML = 'No Accelerometer & Gyroscope API available';
+    }
+
+    function accelerationHandler(acceleration, targetId) {
+        var info, xyz = "[X, Y, Z]";
+
+        info = xyz.replace("X", acceleration.x && acceleration.x.toFixed(1));	//en parametre le nombre de chiffres que l'on veut apres la virgule
+        info = info.replace("Y", acceleration.y && acceleration.y.toFixed(1));
+        info = info.replace("Z", acceleration.z && acceleration.z.toFixed(1));
+        document.getElementById(targetId).innerHTML = info;
+    }
+
+    function rotationHandler(rotation) {
+        var info, xyz = "[X, Y, Z]";
+
+        info = xyz.replace("X", rotation.alpha && rotation.alpha.toFixed(1));
+        info = info.replace("Y", rotation.beta && rotation.beta.toFixed(1));
+        info = info.replace("Z", rotation.gamma && rotation.gamma.toFixed(1));
+        document.getElementById("moRotation").innerHTML = info;
+    }
+
+    function intervalHandler(interval) {
+        document.getElementById("moInterval").innerHTML = interval;
+    }
+
 
 }
 

@@ -4,8 +4,8 @@
 }
 
 body {
-    background-color: black;
-    color: aliceblue;
+    background-color: #ded7d7;
+    color: #000000;
     font-family: 'Krub', sans-serif;
 }
 
@@ -21,12 +21,10 @@ body {
     height: 100%;
 }
 
-/*.centeredDiv {
-    top: 50%;
-    left: 50%;
-    position: absolute;
-    transform: translate(-50%, -50%);
-}*/
+.responsive {
+    width: 100%;
+    height: auto;
+}
 
 .centeredDiv {
     top: 10%;

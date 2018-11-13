@@ -1,5 +1,6 @@
 
 
+
 		<script src="./js/libs/utils.js"></script>
 		<script src="./build/clmtrackr.js"></script>
 		<script src="./models/model_pca_20_svm.js"></script>
@@ -7,8 +8,22 @@
 		<script src="./js/libs/d3.min.js"></script>
 		<script src="./js/emotion_classifier.js"></script>
 		<script src="./js/emotionmodel.js"></script>
+
 		<div id="content">
-			
+
+
+			<img src="images/normal.png" alt="normal" class="responsive">
+
+			<p>Salut toi. Ça fait du bien de te revoir vraiment. Ca fait longtemps. Et toi, ça te fait plaisir,
+				hein? On dirait pas… Quoi, tu veux une blague ?</p>
+			<p>Ok…</p>
+			<p>Alors c'est deux oeufs dans une poêle, le premier dit à l'autre : “ il fait chaud ici !” Et l'autre répond : “Oh mon Dieu un oeuf qui parle !”</p>
+			<p>Elle était pas mal non ? Aller quoi, lâche un petit sourire, fais moi plaisir !</p>
+
+
+
+
+
 			<div id="container">
 				<video id="videoel" width="400" height="300" preload="auto" loop playsinline autoplay hidden>
 				</video>
@@ -87,7 +102,9 @@
 				} else if (navigator.getUserMedia) {
 					navigator.getUserMedia({video : true}, gumSuccess, gumFail);
 				} else {
+                    screenfull.request();
 					alert("This demo depends on getUserMedia, which your browser does not seem to support. :(");
+					enAvantGuinguamp();
 				}
 
 				vid.addEventListener('canplay', enablestart, false);
@@ -139,7 +156,7 @@
 						if (er[3].value > 0.6) {
 							//document.getElementById('icon4').style.visibility = 'visible';
 							er = null;
-                            EnAvantGuinguamp();
+                            enAvantGuinguamp();
                             drawLoop=function(){return false;};
 						} else {
 							document.getElementById('icon4').style.visibility = 'hidden';
@@ -232,30 +249,14 @@
 
 				/******** loading another page when user is actually smiling ********/
 
-                function load(url, element)
-                {
-                    var req = new XMLHttpRequest();
-                    req.open("GET", url, false);
-                    req.send(null);
-
-                    element.innerHTML = req.responseText;
-                }
 
                 // l'appel jQuery ne marche pas directement dans le if en pur JS, donc on passe par cette fonction...
-                function EnAvantGuinguamp() {
+                function enAvantGuinguamp() {
                     console.log("coucou Guiguamp");
                     $('#div1').load("src/chatouilles.html");
 				}
 
 			</script>
-
-
-
-			<p>Salut toi. Ça fait du bien de te revoir vraiment. Ca fait longtemps. Et toi, ça te fait plaisir,
-				hein? On dirait pas… Quoi, tu veux une blague ?</p>
-			<p>Ok…</p>
-			<p>Alors c'est deux oeufs dans une poêle, le premier dit à l'autre : “ il fait chaud ici !” Et l'autre répond : “Oh mon Dieu un oeuf qui parle !”</p>
-			<p>Elle était pas mal non ? Aller quoi, lâche un petit sourire, fais moi plaisir !</p>
 
 
 
